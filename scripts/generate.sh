@@ -18,6 +18,7 @@ module "module2" {
   name = "data-$e-project$i"
 }
 EOF
+  done
 
 cat<<-EOF >$e/project$i/versions.tf
 # versions.tf 
@@ -29,7 +30,18 @@ terraform {
     }
 }
 EOF
-  done
+
+# Path project 1 with incompatible version
+cat<<-EOF >$e/project1/versions.tf
+# versions.tf 
+terraform {
+	required_version = ">=1.0.0"
+
+    required_providers {
+      null = ">= 2.0, < 3.0"
+    }
+}
+EOF
 done
 
 exit
